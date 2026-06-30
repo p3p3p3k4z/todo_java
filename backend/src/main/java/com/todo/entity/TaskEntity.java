@@ -11,6 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -52,9 +56,14 @@ public class TaskEntity {
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "task_assignees",
+        joinColumns = @JoinColumn(name = "task_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @Builder.Default
+    private List<UserEntity> assignees = new ArrayList<>();
 
     /**
      * Relacion con Adjuntos: Una tarea puede tener multiples archivos adjuntos.

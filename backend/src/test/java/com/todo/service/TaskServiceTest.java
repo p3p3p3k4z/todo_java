@@ -67,7 +67,13 @@ class TaskServiceTest {
 
     @Test
     void testCreateTask_Success() {
-        TaskRequest request = new TaskRequest("Test Task", "Test Desc", TaskStatus.PENDIENTE, LocalDate.now());
+        TaskRequest request = TaskRequest.builder()
+                .title("Test Task")
+                .description("Test Desc")
+                .status(TaskStatus.PENDIENTE)
+                .dueDate(LocalDate.now())
+                .assigneeIds(new java.util.ArrayList<>())
+                .build();
         
         TaskEntity savedTask = TaskEntity.builder()
                 .id(1L)
@@ -75,7 +81,7 @@ class TaskServiceTest {
                 .description(request.getDescription())
                 .status(request.getStatus())
                 .dueDate(request.getDueDate())
-                .user(userEntity)
+                .assignees(java.util.List.of(userEntity))
                 .build();
 
         when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(userEntity));

@@ -54,14 +54,14 @@ public class TaskService {
     public List<TaskResponse> getAllTasks() {
         UserEntity user = getAuthenticatedUser();
         // Programacion Funcional (Streams) combinada con POO (metodos de instancia)
-        return taskRepository.findAllByUserId(user.getId()).stream()
+        return taskRepository.findAllByAssignees_Id(user.getId()).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
     public TaskResponse getTaskById(Long id) {
         UserEntity user = getAuthenticatedUser();
-        TaskEntity task = taskRepository.findByIdAndUserId(id, user.getId())
+        TaskEntity task = taskRepository.findByIdAndAssignees_Id(id, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         return mapToResponse(task);
     }
@@ -70,13 +70,20 @@ public class TaskService {
     public TaskResponse createTask(TaskRequest request) {
         UserEntity user = getAuthenticatedUser();
 
+        List<UserEntity> assignees = new java.util.ArrayList<>();
+        if (request.getAssigneeIds() != null && !request.getAssigneeIds().isEmpty()) {
+            assignees = userRepository.findAllById(request.getAssigneeIds());
+        } else {
+            assignees.add(user);
+        }
+
         // Patron de Diseno Builder: Construccion paso a paso del objeto.
         TaskEntity task = TaskEntity.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .status(request.getStatus())
                 .dueDate(request.getDueDate())
-                .user(user)
+                .assignees(assignees)
                 .build();
 
         TaskEntity savedTask = taskRepository.save(task);
@@ -86,7 +93,7 @@ public class TaskService {
     @Transactional
     public TaskResponse updateTask(Long id, TaskRequest request) {
         UserEntity user = getAuthenticatedUser();
-        TaskEntity task = taskRepository.findByIdAndUserId(id, user.getId())
+        TaskEntity task = taskRepository.findByIdAndAssignees_Id(id, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         // Modificando estado interno mediante Setters
@@ -95,6 +102,13 @@ public class TaskService {
         task.setStatus(request.getStatus());
         task.setDueDate(request.getDueDate());
 
+        if (request.getAssigneeIds() != null) {
+            List<UserEntity> assignees = userRepository.findAllById(request.getAssigneeIds());
+            if (!assignees.isEmpty()) {
+                task.setAssignees(assignees);
+            }
+        }
+
         TaskEntity updatedTask = taskRepository.save(task);
         return mapToResponse(updatedTask);
     }
@@ -102,7 +116,7 @@ public class TaskService {
     @Transactional
     public void deleteTask(Long id) {
         UserEntity user = getAuthenticatedUser();
-        TaskEntity task = taskRepository.findByIdAndUserId(id, user.getId())
+        TaskEntity task = taskRepository.findByIdAndAssignees_Id(id, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         
         taskRepository.delete(task);
@@ -114,7 +128,7 @@ public class TaskService {
     @Transactional
     public AttachmentResponse addAttachmentToTask(Long taskId, MultipartFile file) {
         UserEntity user = getAuthenticatedUser();
-        TaskEntity task = taskRepository.findByIdAndUserId(taskId, user.getId())
+        TaskEntity task = taskRepository.findByIdAndAssignees_Id(taskId, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
         // 1. Guardar archivo en File System
@@ -145,6 +159,13 @@ public class TaskService {
                 ? task.getAttachments().stream().map(this::mapAttachmentToResponse).collect(Collectors.toList()) 
                 : null;
 
+        List<Long> assigneeIds = task.getAssignees() != null 
+                ? task.getAssignees().stream().map(UserEntity::getId).collect(Collectors.toList()) 
+                : null;
+        List<String> assigneeEmails = task.getAssignees() != null 
+                ? task.getAssignees().stream().map(UserEntity::getEmail).collect(Collectors.toList()) 
+                : null;
+
         return TaskResponse.builder()
                 .id(task.getId())
                 .title(task.getTitle())
@@ -152,6 +173,8 @@ public class TaskService {
                 .status(task.getStatus())
                 .dueDate(task.getDueDate())
                 .attachments(attachmentResponses)
+                .assigneeIds(assigneeIds)
+                .assigneeEmails(assigneeEmails)
                 .build();
     }
 

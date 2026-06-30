@@ -32,7 +32,7 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManager authenticationManager;
 
-    public void register(UserRegistrationRequest request) {
+    public AuthenticationResponse register(UserRegistrationRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email is already taken!");
         }
@@ -46,6 +46,17 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+
+        // Auto-login al registrarse
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+        String jwt = tokenProvider.generateToken(authentication);
+
+        return AuthenticationResponse.builder()
+                .token(jwt)
+                .build();
     }
 
     public AuthenticationResponse login(AuthenticationRequest request) {

@@ -20,5 +20,7 @@ public class TaskResponse {
     private TaskStatus status;
     private LocalDate dueDate;
     private List<AttachmentResponse> attachments;
+    private List<Long> assigneeIds;
+    private List<String> assigneeEmails;
 }
 
