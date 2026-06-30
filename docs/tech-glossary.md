@@ -56,6 +56,32 @@ Es altamente estructurado, basado fuertemente en TypeScript (lo que otorga tipad
 
 ## 5. Docker y Flyway (Infraestructura)
 
-**Docker:** Permite encapsular la base de datos, el backend y el frontend en contenedores aislados que corren identico en la computadora del desarrollador y en el servidor de produccion, resolviendo el problema de "en mi maquina si funciona".
+### Docker
+**¿Que es?**  
+Es una plataforma que permite empaquetar aplicaciones y sus dependencias en contenedores aislados. Un contenedor es como una maquina virtual superligera que comparte el nucleo del sistema operativo anfitrion.
 
-**Flyway:** Es un controlador de versiones para bases de datos. Aplica archivos SQL (`V1__init.sql`, `V2__add_attachments.sql`) secuencialmente. Esto asegura que la base de datos de todos los desarrolladores tenga la estructura exacta y los datos iniciales requeridos.
+**¿Por que se eligio?**  
+Resuelve el clasico problema de "en mi maquina si funciona". Garantiza que el backend, el frontend y la base de datos se ejecuten exactamente en el mismo entorno, sin importar si el desarrollador usa Linux, Mac o Windows, o si el codigo esta en produccion.
+
+**Como se aplica:**
+- El proyecto utiliza `docker-compose.yml` para orquestar tres servicios simultaneamente:
+  1. `db`: Una base de datos PostgreSQL.
+  2. `api`: El backend Spring Boot empaquetado mediante un `Dockerfile`.
+  3. `frontend`: La aplicacion Angular servida a traves de un servidor NGINX.
+- Se usan volumenes persistentes (como `api_uploads`) para no perder los archivos adjuntos (imagenes de los gatos) cuando los contenedores se reinician.
+
+### Flyway
+**¿Que es?**  
+Es un controlador de versiones para bases de datos relacionales. Permite rastrear, administrar y aplicar cambios al esquema de la base de datos mediante scripts SQL puros.
+
+**¿Por que se eligio?**  
+A diferencia de permitir que Hibernate genere las tablas automaticamente (lo cual es riesgoso en entornos reales), Flyway da control total y determinista sobre como evoluciona la base de datos con el tiempo, asegurando que todos los desarrolladores tengan la misma estructura.
+
+**Como se aplica:**
+- Se ubican los scripts en `backend/src/main/resources/db/migration`.
+- El proyecto arranca aplicando secuencias numeradas:
+  - `V1__init_schema.sql`: Crea las tablas base de usuarios y tareas.
+  - `V2__add_attachments.sql`: Soporte para imagenes.
+  - `V4__add_multiple_assignees.sql`: Habilita multiples responsables por tarea.
+  - `V5__massive_seed.sql`: Llena la base de datos con mas de 20 tareas preasignadas y usuarios de prueba.
+- Spring Boot ejecuta Flyway automaticamente al arrancar, detectando si hay scripts nuevos y aplicandolos antes de exponer la API.

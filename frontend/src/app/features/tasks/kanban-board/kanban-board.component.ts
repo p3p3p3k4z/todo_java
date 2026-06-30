@@ -14,6 +14,8 @@ import { Task, TaskStatus } from '../models/task.model';
 export class KanbanBoardComponent implements OnChanges {
   @Input() tasks: Task[] = [];
   @Output() updateStatus = new EventEmitter<{id: number, status: TaskStatus}>();
+  @Output() editTask = new EventEmitter<Task>();
+  @Output() deleteTask = new EventEmitter<number>();
 
   // Columnas mapeadas localmente para Drag & Drop interactivo.
   pendingTasks: Task[] = [];
@@ -55,6 +57,22 @@ export class KanbanBoardComponent implements OnChanges {
       // El evento emite al TaskBoardComponent que orquesta la persistencia mediante TaskService
       const taskMutated = event.container.data[event.currentIndex];
       this.updateStatus.emit({ id: taskMutated.id!, status: newStatus as TaskStatus });
+    }
+  }
+
+  onEdit(task: Task): void {
+    this.editTask.emit(task);
+  }
+
+  onDelete(taskId: number): void {
+    if (confirm('Esta seguro de que desea eliminar esta tarea?')) {
+      this.deleteTask.emit(taskId);
+    }
+  }
+
+  onComplete(task: Task): void {
+    if (task.status !== TaskStatus.COMPLETADA) {
+      this.updateStatus.emit({ id: task.id!, status: TaskStatus.COMPLETADA });
     }
   }
 }

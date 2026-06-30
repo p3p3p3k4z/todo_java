@@ -58,7 +58,9 @@
       <app-kanban-board 
         *ngSwitchCase="'kanban'"
         [tasks]="filteredTasks"
-        (updateStatus)="updateTaskStatus($event)">
+        (updateStatus)="updateTaskStatus($event)"
+        (editTask)="openEditForm($event)"
+        (deleteTask)="deleteTask($event)">
       </app-kanban-board>
 
       <!-- Calendar View -->

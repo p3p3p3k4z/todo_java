@@ -88,31 +88,7 @@ docker restart todo_api
 
 ---
 
-## 5. Compilar y Ejecutar el Backend localmente (Sin Docker)
-
-Spring Boot utiliza **Maven** como su gestor de dependencias y construcción. Maven lee el archivo `pom.xml`, descarga las librerías necesarias y compila todo el código en un ejecutable `.jar`.
-
-**Pasos para ejecutar el backend manualmente:**
-
-1. Entra a la carpeta del backend:
-```bash
-cd backend
-```
-
-2. Compila el proyecto usando el "Wrapper" (`mvnw`) incluido, el cual descarga Maven automáticamente:
-```bash
-./mvnw clean package -DskipTests
-```
-*(`clean` borra compilaciones viejas, `package` empaqueta el nuevo código, y `-DskipTests` salta las pruebas).*
-
-3. Ejecuta el archivo `.jar` generado:
-```bash
-java -jar target/todo-0.0.1-SNAPSHOT.jar
-```
-
----
-
-## 6. Pruebas y Aseguramiento de Calidad (Testing)
+## 5. Pruebas y Aseguramiento de Calidad (Testing)
 
 Para ejecutar las pruebas unitarias usando JUnit y Mockito, puedes usar un contenedor volátil montando tu código fuente. Ejecuta esto desde la raíz del proyecto:
 ```bash
@@ -121,7 +97,7 @@ docker run --rm -v $(pwd)/backend:/app:z -w /app maven:3.9-eclipse-temurin-17-al
 
 ---
 
-## 7. Pruebas de API por Terminal (CLI Verifier)
+## 6. Pruebas de API por Terminal (CLI Verifier)
 
 El proyecto incluye un script interactivo en bash llamado `cli-verifier.sh` ubicado en la raíz. 
 Este script te permite probar manualmente los endpoints de la API (Login, ver tareas, crear tareas, subir adjuntos) directamente desde tu terminal usando `curl` y formateando las respuestas con `jq`, sin necesidad de abrir Postman o el Frontend.

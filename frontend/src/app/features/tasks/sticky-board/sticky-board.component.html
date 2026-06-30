@@ -24,7 +24,7 @@
         
         <div class="note-body" [style.color]="note.textColor === '#FFFFFF' ? 'rgba(255,255,255,0.9)' : '#333'">
           <div class="note-attachment-preview" *ngIf="note.attachments && note.attachments.length > 0" style="margin-bottom: 1rem;">
-            <img [src]="'/' + note.attachments[0].filePath" alt="Adjunto" style="width: 100%; height: 140px; object-fit: cover; border: 1px solid rgba(0,0,0,0.2);">
+            <img [src]="'/' + note.attachments[0].filePath" alt="Imagen adjunta" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2);">
           </div>
           <p>{{ note.description || 'Sin descripcion' }}</p>
         </div>

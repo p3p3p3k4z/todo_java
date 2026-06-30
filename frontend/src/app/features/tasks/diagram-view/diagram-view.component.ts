@@ -43,10 +43,10 @@ export class DiagramViewComponent implements OnChanges {
         // Tareas huerfanas sin rol asigando caen en un bucket neutral.
         unassigned.push(task);
       } else if (task.roles.length > 1) {
-        // Tareas con multiplicidad de roles entran en bloque de colaboración.
+        // Tasks with multiple assignees fall into the shared collaboration bucket.
         shared.push(task);
       } else {
-        // Extracción de string para evitar fallos por capitalización.
+        // Uppercase normalization to avoid case-sensitivity failures in role matching.
         const r = task.roles[0].toUpperCase();
         if (r.includes('PM') || r.includes('PROJECT MANAGER')) pm.push(task);
         else if (r.includes('DEVOPS')) devops.push(task);

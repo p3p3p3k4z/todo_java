@@ -64,9 +64,9 @@ export class TaskService {
     return this.http.post<Task>(this.API_URL, task).pipe(
       tap((newTask) => {
         const mappedTask = this.mapSingleTask(newTask);
-        // Extraemos la instantanea actual del array en memoria.
+        // Snapshot of the current in-memory array before appending.
         const currentTasks = this.tasksSubject.value;
-        // Empujamos el nuevo array agregando el objeto recién creado.
+        // Pushes new task into the in-memory cache and notifies all subscribers.
         this.tasksSubject.next([...currentTasks, mappedTask]);
       })
     );
@@ -77,10 +77,10 @@ export class TaskService {
       tap((updatedTask) => {
         const mappedTask = this.mapSingleTask(updatedTask);
         const currentTasks = this.tasksSubject.value;
-        // Buscamos el indice del elemento mutado en cache.
+        // Locate the mutated element index in the in-memory cache.
         const index = currentTasks.findIndex(t => t.id === id);
         if (index !== -1) {
-          // Reemplazamos el nodo en memoria y disparamos notificacion a los suscriptores.
+          // Replaces the node in memory and triggers notification to all subscribers.
           currentTasks[index] = mappedTask;
           this.tasksSubject.next([...currentTasks]);
         }
