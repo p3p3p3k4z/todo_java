@@ -1,0 +1,28 @@
+<header class="navbar">
+  <div class="navbar-brand">
+    <h2>To-Do App</h2>
+    <span class="user-info">{{ userEmail }}</span>
+  </div>
+
+  <div class="navbar-center">
+    <button 
+      [class.active]="activeView === 'list'" 
+      (click)="setViewMode('list')">
+      [ Lista ]
+    </button>
+    <button 
+      [class.active]="activeView === 'sticky'" 
+      (click)="setViewMode('sticky')">
+      [ Muro ]
+    </button>
+    <button 
+      [class.active]="activeView === 'diagram'" 
+      (click)="setViewMode('diagram')">
+      [ Diagrama ]
+    </button>
+  </div>
+
+  <div class="navbar-right">
+    <button class="btn-logout" (click)="logout()">Cerrar Sesion</button>
+  </div>
+</header>

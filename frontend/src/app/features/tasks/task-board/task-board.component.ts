@@ -8,14 +8,12 @@ import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { ErrorBannerComponent } from '../../../shared/components/error-banner/error-banner.component';
+import { ViewService, ViewMode } from '../../../core/services/view.service';
+import { StickyBoardComponent } from '../sticky-board/sticky-board.component';
+import { DiagramViewComponent } from '../diagram-view/diagram-view.component';
 
 /**
- * Controla la vista principal donde se agrupan y muestran las tareas del usuario.
- * Carga los datos usando el TaskService, controla si 
- * se muestra el recuadro de "Cargando", y decide que lista de tareas mostrarte.
- * 
- * Entras a la app, este componente arranca, le pide las tareas al TaskService, 
- * y luego le pasa esas tareas al 'task-list' para que las dibuje.
+ * Contenedor orquestador. Inyecta sub-vistas dependiendo del estado emitido por ViewService.
  */
 @Component({
   selector: 'app-task-board',
@@ -27,7 +25,9 @@ import { ErrorBannerComponent } from '../../../shared/components/error-banner/er
     TaskFormComponent, 
     TaskCardComponent,
     SpinnerComponent,
-    ErrorBannerComponent
+    ErrorBannerComponent,
+    StickyBoardComponent,
+    DiagramViewComponent
   ],
   templateUrl: './task-board.component.html',
   styleUrls: ['./task-board.component.scss']
@@ -39,7 +39,7 @@ export class TaskBoardComponent implements OnInit {
   isLoading: boolean = false;
   errorMessage: string = '';
   
-  isBoardMode: boolean = false;
+  activeView: ViewMode = 'list';
   showForm: boolean = false;
   taskToEdit: Task | null = null;
   
@@ -47,29 +47,33 @@ export class TaskBoardComponent implements OnInit {
 
   TaskStatus = TaskStatus;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private viewService: ViewService) {}
 
   ngOnInit(): void {
-    this.loadTasks();
+    // Sincronizacion inicial del ViewMode inyectado desde SidebarComponent.
+    this.viewService.viewMode$.subscribe(mode => {
+      this.activeView = mode;
+    });
+
+    // Enlace reactivo al estado global de tareas (Cache en TaskService).
+    this.taskService.tasks$.subscribe(tasks => {
+      this.tasks = tasks;
+      this.applyFilter(this.statusFilter.value);
+      this.isLoading = false;
+    });
+
+    // Suscripcion al filtro local reactivo (FormControl)
     this.statusFilter.valueChanges.subscribe(value => {
       this.applyFilter(value);
     });
+
+    this.loadTasks();
   }
 
   loadTasks() {
     this.isLoading = true;
     this.errorMessage = '';
-    this.taskService.getTasks().subscribe({
-      next: (data) => {
-        this.tasks = data;
-        this.applyFilter(this.statusFilter.value);
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to load tasks. Please try again.';
-        this.isLoading = false;
-      }
-    });
+    this.taskService.loadTasks();
   }
 
   applyFilter(status: string | null) {
@@ -78,10 +82,6 @@ export class TaskBoardComponent implements OnInit {
     } else {
       this.filteredTasks = this.tasks.filter(t => t.status === status);
     }
-  }
-
-  toggleViewMode() {
-    this.isBoardMode = !this.isBoardMode;
   }
 
   openNewTaskForm() {
@@ -104,7 +104,6 @@ export class TaskBoardComponent implements OnInit {
     if (task.id) {
       this.taskService.updateTask(task.id, task).subscribe({
         next: () => {
-          this.loadTasks();
           this.closeForm();
         },
         error: () => {
@@ -115,7 +114,6 @@ export class TaskBoardComponent implements OnInit {
     } else {
       this.taskService.createTask(task).subscribe({
         next: () => {
-          this.loadTasks();
           this.closeForm();
         },
         error: () => {
@@ -130,7 +128,7 @@ export class TaskBoardComponent implements OnInit {
     this.isLoading = true;
     this.taskService.deleteTask(id).subscribe({
       next: () => {
-        this.loadTasks();
+        // UI updates automatically via subject
       },
       error: () => {
         this.errorMessage = 'Failed to delete task.';

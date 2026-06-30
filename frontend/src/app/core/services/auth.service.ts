@@ -5,12 +5,7 @@ import { tap } from 'rxjs/operators';
 import { TokenStorageService } from './token-storage.service';
 
 /**
- * Gestiona la comunicacion con el backend para el inicio de sesion y registro.
- * Manda los datos por internet y si todo sale bien, 
- * guarda el token recibido en la memoria del navegador usando el TokenStorageService.
- * 
- * Cuando le das click a "Ingresar", el boton llama a 'login(email, password)' en este archivo.
- * Si la contraseña es correcta, este archivo toma el Token de la respuesta y lo guarda.
+ * Gestiona autenticacion contra la API y delegacion de persistencia de tokens.
  */
 @Injectable({
   providedIn: 'root'
@@ -26,6 +21,7 @@ export class AuthService {
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.API_URL}/login`, credentials).pipe(
       tap((response: any) => {
+        // Intercepcion reactiva para almacenar en local storage si el servidor emite token.
         if (response && response.token) {
           this.tokenStorage.saveToken(response.token);
         }

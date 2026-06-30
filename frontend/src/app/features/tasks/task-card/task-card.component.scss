@@ -2,23 +2,23 @@
 @import '../../../shared/styles/mixins';
 
 .task-card {
-  @include card-shadow;
   padding: 1rem;
   margin-bottom: 1rem;
+  border: 1px solid var(--color-border);
   border-left: 6px solid var(--color-text-muted);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: background-color 0.2s;
   background-color: var(--color-bg-surface);
+  border-radius: 0;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: var(--color-bg-main);
   }
 
   &.status-pendiente {
-    border-left-color: var(--color-brand-magenta);
+    border-left-color: var(--color-brand-yellow);
   }
   &.status-progreso {
-    border-left-color: var(--color-brand-yellow);
+    border-left-color: var(--color-brand-orange);
   }
   &.status-completada {
     border-left-color: var(--color-brand-green);
@@ -70,10 +70,10 @@
 
 .status-select {
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #ddd;
+  border-radius: 0;
+  border: 1px solid var(--color-border);
   font-size: 0.85rem;
-  background-color: #f9f9f9;
+  background-color: var(--color-bg-surface);
   cursor: pointer;
 }
 
@@ -81,16 +81,22 @@
   display: flex;
   gap: 0.5rem;
 
-  .btn-icon {
-    background: none;
-    border: none;
+  .btn-text {
+    background: transparent;
+    border: 1px solid transparent;
     cursor: pointer;
-    font-size: 1.1rem;
-    opacity: 0.6;
-    transition: opacity 0.2s;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-main);
+    padding: 0.2rem 0.4rem;
+    transition: border-color 0.2s;
 
     &:hover {
-      opacity: 1;
+      border-color: var(--color-border);
+    }
+    
+    &.delete {
+      color: var(--color-primary-guinda);
     }
   }
 }

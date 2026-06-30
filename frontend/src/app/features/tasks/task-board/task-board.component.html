@@ -9,10 +9,6 @@
         <option [value]="TaskStatus.COMPLETADA">Completada</option>
       </select>
       
-      <button class="btn-toggle" (click)="toggleViewMode()">
-        {{ isBoardMode ? '📋 List View' : '🗂️ Board View' }}
-      </button>
-      
       <button class="btn-primary" (click)="openNewTaskForm()" *ngIf="!showForm">
         + New Task
       </button>
@@ -32,61 +28,32 @@
 
   <ng-container *ngIf="!isLoading && !showForm">
     
-    <!-- List View -->
-    <div class="list-view fade-in" *ngIf="!isBoardMode">
+    <!-- Active View Selector -->
+    <ng-container [ngSwitch]="activeView">
+      
+      <!-- List View -->
       <app-task-list 
-        [tasks]="filteredTasks"
+        *ngSwitchCase="'list'"
+        [tasks]="filteredTasks" 
         (editTask)="openEditForm($event)"
         (deleteTask)="deleteTask($event)"
         (updateStatus)="updateTaskStatus($event)">
       </app-task-list>
-    </div>
 
-    <!-- Board View -->
-    <div class="board-view fade-in" *ngIf="isBoardMode">
-      
-      <div class="board-column column-pendiente">
-        <h3 class="column-title">Pendiente</h3>
-        <div class="column-content">
-          <app-task-card 
-            *ngFor="let task of getTasksByStatus(TaskStatus.PENDIENTE)"
-            [task]="task"
-            [isBoardMode]="true"
-            (edit)="openEditForm($event)"
-            (delete)="deleteTask($event)"
-            (statusChange)="updateTaskStatus($event)">
-          </app-task-card>
-        </div>
-      </div>
+      <!-- Sticky Board View -->
+      <app-sticky-board 
+        *ngSwitchCase="'sticky'"
+        [tasks]="filteredTasks"
+        (editTask)="openEditForm($event)"
+        (updateStatus)="updateTaskStatus($event)">
+      </app-sticky-board>
 
-      <div class="board-column column-progreso">
-        <h3 class="column-title">En Progreso</h3>
-        <div class="column-content">
-          <app-task-card 
-            *ngFor="let task of getTasksByStatus(TaskStatus.EN_PROGRESO)"
-            [task]="task"
-            [isBoardMode]="true"
-            (edit)="openEditForm($event)"
-            (delete)="deleteTask($event)"
-            (statusChange)="updateTaskStatus($event)">
-          </app-task-card>
-        </div>
-      </div>
+      <!-- Diagram View -->
+      <app-diagram-view 
+        *ngSwitchCase="'diagram'"
+        [tasks]="filteredTasks">
+      </app-diagram-view>
 
-      <div class="board-column column-completada">
-        <h3 class="column-title">Completada</h3>
-        <div class="column-content">
-          <app-task-card 
-            *ngFor="let task of getTasksByStatus(TaskStatus.COMPLETADA)"
-            [task]="task"
-            [isBoardMode]="true"
-            (edit)="openEditForm($event)"
-            (delete)="deleteTask($event)"
-            (statusChange)="updateTaskStatus($event)">
-          </app-task-card>
-        </div>
-      </div>
-
-    </div>
+    </ng-container>
   </ng-container>
 </div>

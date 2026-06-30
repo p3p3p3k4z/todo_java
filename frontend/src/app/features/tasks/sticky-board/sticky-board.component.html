@@ -1,0 +1,31 @@
+<div class="sticky-board-container">
+  <div *ngIf="stickyNotes.length === 0" class="empty-state">
+    No hay tareas en el muro.
+  </div>
+
+  <div class="sticky-wall">
+    <ng-container *ngFor="let note of stickyNotes">
+      <div class="sticky-note" 
+           *ngIf="note.status !== 'COMPLETADA' || note.isFalling"
+           [ngClass]="{'falling': note.isFalling}"
+           [style.transform]="'rotate(' + note.rotation + 'deg)'">
+        
+        <div class="note-header">
+          <h4 class="note-title">{{ note.title }}</h4>
+          <button class="btn-text edit" (click)="onEdit(note)" title="Editar">[E]</button>
+        </div>
+        
+        <div class="note-body">
+          <p>{{ note.description }}</p>
+        </div>
+        
+        <div class="note-footer">
+          <span class="due-date" *ngIf="note.dueDate">Vence: {{ note.dueDate }}</span>
+          <button class="btn-text complete" (click)="completeTask(note)" [disabled]="note.isFalling">
+            [Completar]
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

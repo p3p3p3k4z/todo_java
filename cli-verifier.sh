@@ -228,7 +228,6 @@ function add_attachment() {
 
 while true; do
     print_header
-    echo -e "Operaciones Principales (Basadas en full-stack.md):\n"
     echo "  1) Iniciar Sesion (Login / AuthController)"
     echo "  2) Ver Mis Tareas (GET / Detalle JSON)"
     echo "  3) Crear Tarea    (POST / TaskService)"

@@ -4,12 +4,7 @@ import { Task, TaskStatus } from '../models/task.model';
 import { TaskCardComponent } from '../task-card/task-card.component';
 
 /**
- * Se encarga unicamente de dibujar la lista de tareas en pantalla.
- * No se conecta a internet ni pide datos; simplemente recibe una lista 
- * de tareas que el TaskBoard le paso y las muestra en la interfaz.
- * 
- * El TaskBoard le envia 5 tareas. Este componente simplemente hace un 'for' 
- * (en el HTML) y dibuja 5 cuadritos (TaskCards) en la pantalla.
+ * Componente presentacional (Dumb Component) para visualizacion de tabla/lista de tareas.
  */
 @Component({
   selector: 'app-task-list',

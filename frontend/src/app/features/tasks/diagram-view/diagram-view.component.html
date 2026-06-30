@@ -1,0 +1,29 @@
+<div class="diagram-container">
+  <div *ngIf="tasks.length === 0" class="empty-state">
+    No hay tareas para el diagrama.
+  </div>
+
+  <div class="diagram-grid">
+    <div class="role-cluster" *ngFor="let group of diagramGroups" [style.borderColor]="group.colorVar">
+      <h3 class="role-title" [style.color]="group.colorVar">[{{ group.role }}]</h3>
+      
+      <div class="nodes-container">
+        <div *ngIf="group.tasks.length === 0" class="no-nodes">
+          [ Vacio ]
+        </div>
+        
+        <!-- Nodos de las tareas -->
+        <div class="task-node" *ngFor="let task of group.tasks" [style.backgroundColor]="group.colorVar">
+          <div class="node-content">
+            <span class="node-id">#{{ task.id }}</span>
+            <span class="node-title">{{ task.title }}</span>
+          </div>
+          <!-- Roles tags for shared -->
+          <div class="node-tags" *ngIf="task.roles && task.roles.length > 1">
+            <span class="tag" *ngFor="let role of task.roles">[{{ role }}]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

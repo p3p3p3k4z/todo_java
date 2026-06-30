@@ -3,15 +3,15 @@
   <div class="task-header">
     <h3 class="task-title">{{ task.title }}</h3>
     <div class="task-actions">
-      <button class="btn-icon edit" (click)="onEdit()" title="Edit">✏️</button>
-      <button class="btn-icon delete" (click)="onDelete()" title="Delete">🗑️</button>
+      <button class="btn-text edit" (click)="onEdit()" title="Edit">[Editar]</button>
+      <button class="btn-text delete" (click)="onDelete()" title="Delete">[X]</button>
     </div>
   </div>
 
   <p class="task-desc" *ngIf="task.description">{{ task.description }}</p>
 
   <div class="task-footer">
-    <span class="due-date" *ngIf="task.dueDate">📅 {{ task.dueDate }}</span>
+    <span class="due-date" *ngIf="task.dueDate">Vence: {{ task.dueDate }}</span>
     <select class="status-select" [value]="task.status" (change)="onStatusChange($event)">
       <option [value]="TaskStatus.PENDIENTE">Pendiente</option>
       <option [value]="TaskStatus.EN_PROGRESO">En Progreso</option>
