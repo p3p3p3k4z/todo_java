@@ -11,7 +11,9 @@ import { ErrorBannerComponent } from '../../../shared/components/error-banner/er
 import { ViewService, ViewMode } from '../../../core/services/view.service';
 import { StickyBoardComponent } from '../sticky-board/sticky-board.component';
 import { DiagramViewComponent } from '../diagram-view/diagram-view.component';
-
+import { KanbanBoardComponent } from '../kanban-board/kanban-board.component';
+import { CalendarBoardComponent } from '../calendar-board/calendar-board.component';
+import { LucideAngularModule, PlusCircle } from 'lucide-angular';
 /**
  * Contenedor orquestador. Inyecta sub-vistas dependiendo del estado emitido por ViewService.
  */
@@ -27,7 +29,10 @@ import { DiagramViewComponent } from '../diagram-view/diagram-view.component';
     SpinnerComponent,
     ErrorBannerComponent,
     StickyBoardComponent,
-    DiagramViewComponent
+    DiagramViewComponent,
+    KanbanBoardComponent,
+    CalendarBoardComponent,
+    LucideAngularModule
   ],
   templateUrl: './task-board.component.html',
   styleUrls: ['./task-board.component.scss']
@@ -46,6 +51,7 @@ export class TaskBoardComponent implements OnInit {
   statusFilter = new FormControl('');
 
   TaskStatus = TaskStatus;
+  readonly PlusIcon = PlusCircle;
 
   constructor(private taskService: TaskService, private viewService: ViewService) {}
 
@@ -97,6 +103,47 @@ export class TaskBoardComponent implements OnInit {
   closeForm() {
     this.showForm = false;
     this.taskToEdit = null;
+  }
+
+  onFormSave(event: {task: Task, file?: File}) {
+    this.isLoading = true;
+    const { task, file } = event;
+    
+    if (task.id) {
+      this.taskService.updateTask(task.id, task).subscribe({
+        next: (savedTask) => {
+          if (file) {
+            this.taskService.uploadAttachment(savedTask.id!, file).subscribe({
+              next: () => this.closeForm(),
+              error: () => { this.errorMessage = 'Fallo al subir la imagen adjunta.'; this.isLoading = false; }
+            });
+          } else {
+            this.closeForm();
+          }
+        },
+        error: () => {
+          this.errorMessage = 'Failed to update task.';
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.taskService.createTask(task).subscribe({
+        next: (savedTask) => {
+          if (file) {
+            this.taskService.uploadAttachment(savedTask.id!, file).subscribe({
+              next: () => this.closeForm(),
+              error: () => { this.errorMessage = 'Fallo al subir la imagen adjunta.'; this.isLoading = false; }
+            });
+          } else {
+            this.closeForm();
+          }
+        },
+        error: () => {
+          this.errorMessage = 'Failed to create task.';
+          this.isLoading = false;
+        }
+      });
+    }
   }
 
   saveTask(task: Task) {

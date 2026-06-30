@@ -1,0 +1,66 @@
+<div class="calendar-wrapper fade-in">
+  
+  <div class="calendar-header">
+    <lucide-icon [img]="CalendarIcon" [size]="24"></lucide-icon>
+    <h2>Calendario</h2>
+    
+    <div class="calendar-nav">
+      <button class="btn-text nav-btn" (click)="prevMonth()">&#8592; Anterior</button>
+      <span class="month-label">{{ currentMonthName }} {{ currentYear }}</span>
+      <button class="btn-text nav-btn" (click)="nextMonth()">Siguiente &#8594;</button>
+    </div>
+  </div>
+
+  <div class="calendar-grid">
+    <div class="weekday-header">Dom</div>
+    <div class="weekday-header">Lun</div>
+    <div class="weekday-header">Mar</div>
+    <div class="weekday-header">Mié</div>
+    <div class="weekday-header">Jue</div>
+    <div class="weekday-header">Vie</div>
+    <div class="weekday-header">Sáb</div>
+
+    <div class="calendar-day" *ngFor="let day of calendarDays" 
+         [class.other-month]="!day.isCurrentMonth"
+         [class.today]="day.isToday"
+         [class.has-tasks]="day.tasks.length > 0"
+         (click)="openDayTasks(day)">
+      
+      <div class="day-number">{{ day.date | date:'d' }}</div>
+      
+      <div class="task-dots" *ngIf="day.tasks.length > 0">
+        <span class="dot" *ngFor="let t of day.tasks" [ngClass]="'status-' + t.status.toLowerCase()"></span>
+      </div>
+      
+      <div class="task-count" *ngIf="day.tasks.length > 0">
+        {{ day.tasks.length }} tarea(s)
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay Modal -->
+  <div class="day-tasks-modal" *ngIf="selectedDay">
+    <div class="modal-backdrop" (click)="closeDayTasks()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Tareas del {{ selectedDay.date | date:'dd/MM/yyyy' }}</h3>
+        <button class="close-btn" (click)="closeDayTasks()">X</button>
+      </div>
+      
+      <div class="modal-body">
+        <div 
+          class="calendar-card" 
+          *ngFor="let task of selectedDay.tasks"
+          [class.completed]="task.status === 'COMPLETADA'"
+          (click)="editTask.emit(task); closeDayTasks()">
+          
+          <div class="card-header">
+            <span class="title">{{ task.title }}</span>
+          </div>
+          <span class="status-badge">{{ task.status }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

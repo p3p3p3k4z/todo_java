@@ -20,13 +20,12 @@
 }
 
 .sticky-note {
-  width: 220px;
-  min-height: 220px;
-  background-color: #FDF485; /* Amarillo post-it tradicional */
-  border: 1px solid #333333; /* Borde oscuro flat */
+  width: 320px;
+  min-height: 320px;
+  border: 1px solid rgba(0,0,0,0.1); /* Borde estricto flat */
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1.8rem;
   position: relative;
   transition: transform 0.2s ease;
   
@@ -38,9 +37,10 @@
     z-index: 10;
   }
 
-  &.falling {
-    animation: fallOff 0.8s forwards cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  &.completed-note {
+    opacity: 0.5;
     pointer-events: none;
+    filter: grayscale(0.2);
   }
 }
 
@@ -54,48 +54,41 @@
 
   .note-title {
     margin: 0;
-    font-size: 1rem;
-    color: #111;
+    font-size: 1.4rem;
+    font-weight: 700;
   }
 }
 
 .note-body {
   flex-grow: 1;
-  font-size: 0.875rem;
-  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.45;
   word-wrap: break-word;
 }
 
 .note-footer {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  font-size: 0.75rem;
-  color: #555;
+  font-size: 0.8rem;
 }
 
 .btn-text {
-  background: transparent;
-  border: 1px solid transparent;
-  color: #111;
-  font-weight: bold;
+  border: none;
+  font-weight: 600;
   cursor: pointer;
-  padding: 0.2rem;
-  font-size: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
 
   &:hover {
-    border: 1px solid #111;
+    opacity: 0.85;
   }
 
   &.complete {
-    border: 1px solid #111;
-    background-color: var(--color-bg-surface);
     width: 100%;
-    
-    &:hover {
-      background-color: #e0d8c3;
-    }
+    margin-top: 0.5rem;
     
     &:disabled {
       opacity: 0.5;
@@ -103,14 +96,4 @@
   }
 }
 
-/* Animacion de caida tipo gravedad */
-@keyframes fallOff {
-  0% {
-    transform: translateY(0) rotate(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(45deg);
-    opacity: 0;
-  }
-}
+

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-export type ViewMode = 'list' | 'sticky' | 'diagram';
+export type ViewMode = 'list' | 'sticky' | 'diagram' | 'kanban' | 'calendar';
 
 /**
  * Gestiona el estado reactivo de la vista activa (Lista, Muro o Diagrama).

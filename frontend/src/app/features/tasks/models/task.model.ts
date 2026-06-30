@@ -4,6 +4,14 @@ export enum TaskStatus {
   COMPLETADA = 'COMPLETADA'
 }
 
+export interface Attachment {
+  id: number;
+  fileName: string;
+  fileType: string;
+  filePath: string;
+  uploadedAt: string;
+}
+
 export interface Task {
   id?: number;
   title: string;
@@ -11,4 +19,5 @@ export interface Task {
   status: TaskStatus;
   dueDate?: string; // YYYY-MM-DD
   roles?: string[]; // PM, DevOps, SysAdmin, Developer
+  attachments?: Attachment[];
 }

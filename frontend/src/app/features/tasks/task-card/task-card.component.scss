@@ -2,36 +2,56 @@
 @import '../../../shared/styles/mixins';
 
 .task-card {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid var(--color-border);
-  border-left: 6px solid var(--color-text-muted);
-  transition: background-color 0.2s;
-  background-color: var(--color-bg-surface);
+  padding: 1.5rem; /* Padding generoso (24px) para dejar respirar el contenido */
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.15); /* Borde plano y muy sutil */
+  background-color: var(--color-bg-surface); /* Blanco puro estricto */
   border-radius: 0;
+  
+  /* Uso de flexbox column para forzar que el titulo quede arriba y los botones abajo */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  /* Eliminamos la animacion de levantamiento (transform) para mantenerlo 100% flat y sobrio */
+  transition: border-color 0.2s;
 
   &:hover {
-    background-color: var(--color-bg-main);
+    border-color: rgba(0,0,0,0.4);
   }
 
-  &.status-pendiente {
-    border-left-color: var(--color-brand-yellow);
-  }
-  &.status-progreso {
-    border-left-color: var(--color-brand-orange);
-  }
-  &.status-completada {
-    border-left-color: var(--color-brand-green);
-  }
+  &.status-pendiente { /* Removido el borde grueso, el color se usara solo en tipografia o meta */ }
+  &.status-progreso { }
+  &.status-completada { }
 
   &.board-mode {
-    display: flex;
-    flex-direction: column;
     height: 100%;
-    
-    .task-desc {
-      flex-grow: 1;
-    }
+  }
+}
+
+.task-content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.task-main-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.task-thumbnail-wrapper {
+  flex-shrink: 0;
+  width: 150px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border: 1px solid rgba(0,0,0,0.1);
   }
 }
 
@@ -39,12 +59,12 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 
   .task-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--color-brand-indigo);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-brand-indigo); /* Titulo colorido para distinción */
     margin: 0;
   }
 }
@@ -52,19 +72,23 @@
 .task-desc {
   font-size: 0.9rem;
   color: var(--color-text-muted);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   white-space: pre-wrap;
+  flex-grow: 1; /* Permite que la descripcion empuje el footer y acciones hacia abajo */
 }
 
 .task-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
   font-size: 0.85rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding-top: 1rem;
 
   .due-date {
-    color: var(--color-brand-orange);
-    font-weight: 500;
+    color: var(--color-text-muted);
   }
 }
 
@@ -72,31 +96,36 @@
   padding: 0.25rem 0.5rem;
   border-radius: 0;
   border: 1px solid var(--color-border);
-  font-size: 0.85rem;
-  background-color: var(--color-bg-surface);
+  font-size: 0.75rem;
+  background-color: transparent;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 .task-actions {
   display: flex;
   gap: 0.5rem;
+  margin-top: 1rem;
 
   .btn-text {
-    background: transparent;
-    border: 1px solid transparent;
+    border: none;
     cursor: pointer;
     font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--color-text-main);
-    padding: 0.2rem 0.4rem;
-    transition: border-color 0.2s;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    color: #FFFFFF;
+    transition: opacity 0.2s;
 
     &:hover {
-      border-color: var(--color-border);
+      opacity: 0.85;
+    }
+    
+    &.edit {
+      background-color: var(--color-brand-teal);
     }
     
     &.delete {
-      color: var(--color-primary-guinda);
+      background-color: var(--color-brand-guinda);
     }
   }
 }

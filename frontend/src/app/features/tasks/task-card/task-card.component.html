@@ -1,21 +1,34 @@
 <div class="task-card" [ngClass]="{'board-mode': isBoardMode, 'list-mode': !isBoardMode, 'status-pendiente': task.status === TaskStatus.PENDIENTE, 'status-progreso': task.status === TaskStatus.EN_PROGRESO, 'status-completada': task.status === TaskStatus.COMPLETADA}">
   
-  <div class="task-header">
-    <h3 class="task-title">{{ task.title }}</h3>
-    <div class="task-actions">
-      <button class="btn-text edit" (click)="onEdit()" title="Edit">[Editar]</button>
-      <button class="btn-text delete" (click)="onDelete()" title="Delete">[X]</button>
+  <div class="task-content-wrapper">
+    <div class="task-main-info">
+      <div class="task-header">
+        <h3 class="task-title">{{ task.title }}</h3>
+      </div>
+
+      <p class="task-desc" *ngIf="task.description">{{ task.description }}</p>
+
+      <div class="task-footer">
+        <span class="due-date" *ngIf="task.dueDate">Fecha Limite: {{ task.dueDate }}</span>
+        <select class="status-select" [value]="task.status" (change)="onStatusChange($event)">
+          <option [value]="TaskStatus.PENDIENTE">Pendiente</option>
+          <option [value]="TaskStatus.EN_PROGRESO">En Progreso</option>
+          <option [value]="TaskStatus.COMPLETADA">Completada</option>
+        </select>
+      </div>
+
+      <div class="task-actions">
+        <button class="btn-text edit" (click)="onEdit()" title="Edit" style="display: flex; align-items: center; gap: 0.3rem;">
+          <lucide-icon [img]="EditIcon" [size]="14"></lucide-icon> Editar
+        </button>
+        <button class="btn-text delete" (click)="onDelete()" title="Delete" style="display: flex; align-items: center; gap: 0.3rem;">
+          <lucide-icon [img]="TrashIcon" [size]="14"></lucide-icon> Eliminar
+        </button>
+      </div>
     </div>
-  </div>
 
-  <p class="task-desc" *ngIf="task.description">{{ task.description }}</p>
-
-  <div class="task-footer">
-    <span class="due-date" *ngIf="task.dueDate">Vence: {{ task.dueDate }}</span>
-    <select class="status-select" [value]="task.status" (change)="onStatusChange($event)">
-      <option [value]="TaskStatus.PENDIENTE">Pendiente</option>
-      <option [value]="TaskStatus.EN_PROGRESO">En Progreso</option>
-      <option [value]="TaskStatus.COMPLETADA">Completada</option>
-    </select>
+    <div class="task-thumbnail-wrapper" *ngIf="task.attachments && task.attachments.length > 0">
+      <img [src]="'/' + task.attachments[0].filePath" alt="Adjunto">
+    </div>
   </div>
 </div>

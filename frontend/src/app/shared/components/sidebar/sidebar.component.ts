@@ -4,17 +4,26 @@ import { Router, RouterModule } from '@angular/router';
 import { TokenStorageService } from '../../../core/services/token-storage.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ViewService, ViewMode } from '../../../core/services/view.service';
+import { LucideAngularModule, LayoutList, StickyNote, Network, LayoutDashboard, Calendar, LogOut, CheckSquare } from 'lucide-angular';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
   userEmail: string = '';
   activeView: ViewMode = 'list';
+
+  readonly ListIcon = LayoutList;
+  readonly StickyIcon = StickyNote;
+  readonly DiagramIcon = Network;
+  readonly KanbanIcon = LayoutDashboard;
+  readonly CalendarIcon = Calendar;
+  readonly LogoutIcon = LogOut;
+  readonly LogoIcon = CheckSquare;
 
   constructor(
     private tokenStorage: TokenStorageService,

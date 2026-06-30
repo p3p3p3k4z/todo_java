@@ -36,6 +36,8 @@ services:
       - .env
     ports:
       - "8080:8080"
+    volumes:
+      - api_uploads:/app/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -60,6 +62,8 @@ services:
 
 volumes:
   pgdata:
+    driver: local
+  api_uploads:
     driver: local
 
 networks:

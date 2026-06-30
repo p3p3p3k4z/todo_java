@@ -1,0 +1,118 @@
+<div class="kanban-wrapper fade-in">
+  <!-- Columna PENDIENTE -->
+  <div class="kanban-column">
+    <div class="column-header pending-header">
+      <lucide-icon [img]="ClockIcon" [size]="20"></lucide-icon>
+      <h3>Pendientes</h3>
+    </div>
+    
+    <div
+      cdkDropList
+      #pendingList="cdkDropList"
+      [cdkDropListData]="pendingTasks"
+      [cdkDropListConnectedTo]="[inProgressList, completedList]"
+      class="task-list-container"
+      (cdkDropListDropped)="drop($event, 'PENDIENTE')">
+      
+      <div class="kanban-card" *ngFor="let task of pendingTasks" cdkDrag>
+        <div class="card-attachment-preview" *ngIf="task.attachments && task.attachments.length > 0">
+          <img [src]="'/' + task.attachments[0].filePath" alt="Adjunto">
+        </div>
+        <div class="card-title">{{ task.title }}</div>
+        <div class="card-desc" *ngIf="task.description">{{ task.description }}</div>
+        <div class="card-meta" *ngIf="task.dueDate">Fecha Límite: {{ task.dueDate }}</div>
+        
+        <div class="card-roles" *ngIf="task.roles && task.roles.length > 0">
+          <span class="role-badge" *ngFor="let role of task.roles" [attr.data-role]="role">
+            {{ role }}
+          </span>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-text" style="display: flex; align-items: center; gap: 0.3rem;"><lucide-icon [img]="EditIcon" [size]="12"></lucide-icon> Editar</button>
+          <button class="btn-text" style="display: flex; align-items: center; gap: 0.3rem;"><lucide-icon [img]="TrashIcon" [size]="12"></lucide-icon> Eliminar</button>
+          <label class="checkbox-wrapper">
+            <input type="checkbox"> Completada
+          </label>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Columna EN PROGRESO -->
+  <div class="kanban-column">
+    <div class="column-header in-progress-header">
+      <lucide-icon [img]="SettingsIcon" [size]="20"></lucide-icon>
+      <h3>En Progreso</h3>
+    </div>
+    
+    <div
+      cdkDropList
+      #inProgressList="cdkDropList"
+      [cdkDropListData]="inProgressTasks"
+      [cdkDropListConnectedTo]="[pendingList, completedList]"
+      class="task-list-container"
+      (cdkDropListDropped)="drop($event, 'EN_PROGRESO')">
+      
+      <div class="kanban-card" *ngFor="let task of inProgressTasks" cdkDrag>
+        <div class="card-attachment-preview" *ngIf="task.attachments && task.attachments.length > 0">
+          <img [src]="'/' + task.attachments[0].filePath" alt="Adjunto">
+        </div>
+        <div class="card-title">{{ task.title }}</div>
+        <div class="card-desc" *ngIf="task.description">{{ task.description }}</div>
+        <div class="card-meta" *ngIf="task.dueDate">Fecha Límite: {{ task.dueDate }}</div>
+        
+        <div class="card-roles" *ngIf="task.roles && task.roles.length > 0">
+          <span class="role-badge" *ngFor="let role of task.roles" [attr.data-role]="role">
+            {{ role }}
+          </span>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-text" style="display: flex; align-items: center; gap: 0.3rem;"><lucide-icon [img]="EditIcon" [size]="12"></lucide-icon> Editar</button>
+          <button class="btn-text" style="display: flex; align-items: center; gap: 0.3rem;"><lucide-icon [img]="TrashIcon" [size]="12"></lucide-icon> Eliminar</button>
+          <label class="checkbox-wrapper">
+            <input type="checkbox"> Completada
+          </label>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Columna COMPLETADA -->
+  <div class="kanban-column">
+    <div class="column-header completed-header">
+      <lucide-icon [img]="CheckCircle2Icon" [size]="20"></lucide-icon>
+      <h3>Completadas</h3>
+    </div>
+    
+    <div
+      cdkDropList
+      #completedList="cdkDropList"
+      [cdkDropListData]="completedTasks"
+      [cdkDropListConnectedTo]="[pendingList, inProgressList]"
+      class="task-list-container"
+      (cdkDropListDropped)="drop($event, 'COMPLETADA')">
+      
+      <div class="kanban-card completed-card" *ngFor="let task of completedTasks" cdkDrag>
+        <div class="card-attachment-preview" *ngIf="task.attachments && task.attachments.length > 0">
+          <img [src]="'/' + task.attachments[0].filePath" alt="Adjunto">
+        </div>
+        <div class="card-title">{{ task.title }}</div>
+        <div class="card-desc" *ngIf="task.description">{{ task.description }}</div>
+        <div class="card-meta" *ngIf="task.dueDate">Fecha Límite: {{ task.dueDate }}</div>
+
+        <div class="card-actions">
+          <button class="btn-text" style="display: flex; align-items: center; gap: 0.3rem;"><lucide-icon [img]="EditIcon" [size]="12"></lucide-icon> Editar</button>
+          <button class="btn-text" style="display: flex; align-items: center; gap: 0.3rem;"><lucide-icon [img]="TrashIcon" [size]="12"></lucide-icon> Eliminar</button>
+          <label class="checkbox-wrapper">
+            <input type="checkbox" checked disabled> Completada
+          </label>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

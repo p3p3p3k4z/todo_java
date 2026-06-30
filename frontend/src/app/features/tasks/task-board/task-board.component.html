@@ -9,8 +9,8 @@
         <option [value]="TaskStatus.COMPLETADA">Completada</option>
       </select>
       
-      <button class="btn-primary" (click)="openNewTaskForm()" *ngIf="!showForm">
-        + New Task
+      <button class="btn-primary" (click)="openNewTaskForm()" *ngIf="!showForm" style="display: flex; align-items: center; gap: 0.4rem;">
+        <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon> New Task
       </button>
     </div>
   </div>
@@ -21,7 +21,7 @@
   <div *ngIf="showForm" class="form-wrapper fade-in">
     <app-task-form 
       [taskToEdit]="taskToEdit"
-      (save)="saveTask($event)"
+      (save)="onFormSave($event)"
       (cancel)="closeForm()">
     </app-task-form>
   </div>
@@ -53,6 +53,20 @@
         *ngSwitchCase="'diagram'"
         [tasks]="filteredTasks">
       </app-diagram-view>
+
+      <!-- Kanban View -->
+      <app-kanban-board 
+        *ngSwitchCase="'kanban'"
+        [tasks]="filteredTasks"
+        (updateStatus)="updateTaskStatus($event)">
+      </app-kanban-board>
+
+      <!-- Calendar View -->
+      <app-calendar-board 
+        *ngSwitchCase="'calendar'"
+        [tasks]="filteredTasks"
+        (editTask)="openEditForm($event)">
+      </app-calendar-board>
 
     </ng-container>
   </ng-container>

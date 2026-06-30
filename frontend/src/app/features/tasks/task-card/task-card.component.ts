@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task, TaskStatus } from '../models/task.model';
+import { LucideAngularModule, Edit2, Trash2 } from 'lucide-angular';
 
 @Component({
   selector: 'app-task-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './task-card.component.html',
   styleUrls: ['./task-card.component.scss']
 })
@@ -16,6 +17,9 @@ export class TaskCardComponent {
   @Output() edit = new EventEmitter<Task>();
   @Output() delete = new EventEmitter<number>();
   @Output() statusChange = new EventEmitter<{id: number, status: TaskStatus}>();
+
+  readonly EditIcon = Edit2;
+  readonly TrashIcon = Trash2;
 
   TaskStatus = TaskStatus;
 

@@ -18,9 +18,9 @@
 }
 
 .role-cluster {
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(0,0,0,0.1);
   padding: 1rem;
-  background-color: var(--color-bg-surface);
+  background-color: #FFFFFF;
   
   .role-title {
     margin-top: 0;
@@ -28,6 +28,11 @@
     font-size: 1.1rem;
     border-bottom: 1px dashed rgba(0,0,0,0.2);
     padding-bottom: 0.5rem;
+  }
+  
+  /* Simular edge guinda si es grupo compartido */
+  &:nth-child(5) {
+    border-left: 4px solid var(--color-brand-guinda);
   }
 }
 
@@ -44,14 +49,16 @@
 }
 
 .task-node {
-  color: #FFFFFF;
+  color: #333;
   padding: 0.75rem;
   font-size: 0.9rem;
+  background-color: #FFFFFF;
   
   /* Strictly Flat Design */
   border-radius: 0 !important;
   box-shadow: none !important;
-  border: 1px solid rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,0.15);
+  border-top: 6px solid;
   
   .node-content {
     display: flex;
@@ -77,8 +84,9 @@
     
     .tag {
       font-size: 0.65rem;
-      background-color: rgba(0,0,0,0.2);
-      padding: 0.1rem 0.3rem;
+      background-color: var(--color-text-muted);
+      color: #FFFFFF;
+      padding: 0.2rem 0.4rem;
       text-transform: uppercase;
       font-weight: bold;
     }

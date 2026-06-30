@@ -6,23 +6,39 @@
   <div class="sticky-wall">
     <ng-container *ngFor="let note of stickyNotes">
       <div class="sticky-note" 
-           *ngIf="note.status !== 'COMPLETADA' || note.isFalling"
-           [ngClass]="{'falling': note.isFalling}"
-           [style.transform]="'rotate(' + note.rotation + 'deg)'">
+           [class.completed-note]="note.status === 'COMPLETADA'"
+           [style.transform]="'rotate(' + note.rotation + 'deg)'"
+           [style.backgroundColor]="note.bgColor"
+           [style.color]="note.textColor">
         
-        <div class="note-header">
-          <h4 class="note-title">{{ note.title }}</h4>
-          <button class="btn-text edit" (click)="onEdit(note)" title="Editar">[E]</button>
+        <div class="note-header" [style.borderColor]="note.textColor === '#FFFFFF' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.2)'">
+          <h3 class="note-title" [style.color]="note.textColor">{{ note.title }}</h3>
+          <button class="btn-text edit" 
+                  style="display: flex; align-items: center; justify-content: center;"
+                  [style.backgroundColor]="note.textColor"
+                  [style.color]="note.textColor === '#FFFFFF' ? '#333333' : '#FFFFFF'"
+                  (click)="onEdit(note)" title="Editar">
+                  <lucide-icon [img]="EditIcon" [size]="14"></lucide-icon>
+          </button>
         </div>
         
-        <div class="note-body">
-          <p>{{ note.description }}</p>
+        <div class="note-body" [style.color]="note.textColor === '#FFFFFF' ? 'rgba(255,255,255,0.9)' : '#333'">
+          <div class="note-attachment-preview" *ngIf="note.attachments && note.attachments.length > 0" style="margin-bottom: 1rem;">
+            <img [src]="'/' + note.attachments[0].filePath" alt="Adjunto" style="width: 100%; height: 140px; object-fit: cover; border: 1px solid rgba(0,0,0,0.2);">
+          </div>
+          <p>{{ note.description || 'Sin descripcion' }}</p>
         </div>
         
-        <div class="note-footer">
+        <div class="note-footer" [style.color]="note.textColor === '#FFFFFF' ? 'rgba(255,255,255,0.8)' : '#555'">
           <span class="due-date" *ngIf="note.dueDate">Vence: {{ note.dueDate }}</span>
-          <button class="btn-text complete" (click)="completeTask(note)" [disabled]="note.isFalling">
-            [Completar]
+          <button 
+            *ngIf="note.status !== 'COMPLETADA'"
+            class="btn-text complete" 
+            style="display: flex; align-items: center; justify-content: center; gap: 0.3rem;"
+            [style.backgroundColor]="note.textColor"
+            [style.color]="note.textColor === '#FFFFFF' ? '#333333' : '#FFFFFF'"
+            (click)="completeTask(note)">
+            <lucide-icon [img]="CheckIcon" [size]="18"></lucide-icon> Completar
           </button>
         </div>
       </div>

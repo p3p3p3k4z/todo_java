@@ -33,15 +33,7 @@ button, input, select, textarea, .card, .task-card, .board-column {
   border: 1px solid var(--color-border);
 }
 
-:root {
-  --color-role-pm: #8C1D40;
-  --color-role-devops: #00897B;
-  --color-role-sysadmin: #3949AB;
-  --color-role-dev: #D81B60;
-  --color-role-shared: #FBC02D;
-}
-
-button {
+ button {
   background-color: var(--color-bg-surface);
   color: var(--color-text-main);
   cursor: pointer;

@@ -1,28 +1,46 @@
 <header class="navbar">
-  <div class="navbar-brand">
-    <h2>To-Do App</h2>
-    <span class="user-info">{{ userEmail }}</span>
+  <div class="navbar-brand" style="display: flex; align-items: center; gap: 0.5rem;">
+    <lucide-icon [img]="LogoIcon" [size]="24"></lucide-icon>
+    <h2 style="margin: 0;">To-Do App</h2>
+    <span class="user-info" style="margin-left: 1rem;">{{ userEmail }}</span>
   </div>
 
-  <div class="navbar-center">
+  <div class="navbar-center" style="display: flex; gap: 0.5rem;">
     <button 
       [class.active]="activeView === 'list'" 
-      (click)="setViewMode('list')">
-      [ Lista ]
+      (click)="setViewMode('list')"
+      style="display: flex; align-items: center; gap: 0.4rem;">
+      <lucide-icon [img]="ListIcon" [size]="18"></lucide-icon> Lista
     </button>
     <button 
       [class.active]="activeView === 'sticky'" 
-      (click)="setViewMode('sticky')">
-      [ Muro ]
+      (click)="setViewMode('sticky')"
+      style="display: flex; align-items: center; gap: 0.4rem;">
+      <lucide-icon [img]="StickyIcon" [size]="18"></lucide-icon> Muro
     </button>
     <button 
       [class.active]="activeView === 'diagram'" 
-      (click)="setViewMode('diagram')">
-      [ Diagrama ]
+      (click)="setViewMode('diagram')"
+      style="display: flex; align-items: center; gap: 0.4rem;">
+      <lucide-icon [img]="DiagramIcon" [size]="18"></lucide-icon> Diagrama
+    </button>
+    <button 
+      [class.active]="activeView === 'kanban'" 
+      (click)="setViewMode('kanban')"
+      style="display: flex; align-items: center; gap: 0.4rem;">
+      <lucide-icon [img]="KanbanIcon" [size]="18"></lucide-icon> Kanban
+    </button>
+    <button 
+      [class.active]="activeView === 'calendar'" 
+      (click)="setViewMode('calendar')"
+      style="display: flex; align-items: center; gap: 0.4rem;">
+      <lucide-icon [img]="CalendarIcon" [size]="18"></lucide-icon> Calendario
     </button>
   </div>
 
   <div class="navbar-right">
-    <button class="btn-logout" (click)="logout()">Cerrar Sesion</button>
+    <button class="btn-logout" (click)="logout()" style="display: flex; align-items: center; gap: 0.4rem;">
+      <lucide-icon [img]="LogoutIcon" [size]="18"></lucide-icon> Cerrar Sesion
+    </button>
   </div>
 </header>

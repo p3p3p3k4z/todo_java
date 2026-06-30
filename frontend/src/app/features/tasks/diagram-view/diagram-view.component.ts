@@ -1,17 +1,19 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../models/task.model';
+import { LucideAngularModule, Briefcase, Users, Monitor, Server, Share2, HelpCircle } from 'lucide-angular';
 
 interface DiagramGroup {
   role: string;
   tasks: Task[];
   colorVar: string;
+  icon: any;
 }
 
 @Component({
   selector: 'app-diagram-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './diagram-view.component.html',
   styleUrls: ['./diagram-view.component.scss']
 })
@@ -56,15 +58,15 @@ export class DiagramViewComponent implements OnChanges {
 
     // Mapeo final al array de renderizado asociando las variables CSS de color.
     this.diagramGroups = [
-      { role: 'Project Manager', tasks: pm, colorVar: 'var(--color-role-pm)' },
-      { role: 'DevOps', tasks: devops, colorVar: 'var(--color-role-devops)' },
-      { role: 'SysAdmin', tasks: sysadmin, colorVar: 'var(--color-role-sysadmin)' },
-      { role: 'Developer', tasks: dev, colorVar: 'var(--color-role-dev)' },
-      { role: 'Shared / Colaboracion', tasks: shared, colorVar: 'var(--color-role-shared)' }
+      { role: 'Project Manager', tasks: pm, colorVar: 'var(--color-brand-guinda)', icon: Briefcase },
+      { role: 'DevOps', tasks: devops, colorVar: 'var(--color-brand-teal)', icon: Server },
+      { role: 'SysAdmin', tasks: sysadmin, colorVar: 'var(--color-brand-indigo)', icon: Monitor },
+      { role: 'Developer', tasks: dev, colorVar: 'var(--color-brand-magenta)', icon: Users },
+      { role: 'Shared / Colaboracion', tasks: shared, colorVar: 'var(--color-brand-yellow)', icon: Share2 }
     ];
 
     if (unassigned.length > 0) {
-      this.diagramGroups.push({ role: 'Sin Asignar', tasks: unassigned, colorVar: 'var(--color-text-muted)' });
+      this.diagramGroups.push({ role: 'Sin Asignar', tasks: unassigned, colorVar: 'var(--color-text-muted)', icon: HelpCircle });
     }
   }
 }

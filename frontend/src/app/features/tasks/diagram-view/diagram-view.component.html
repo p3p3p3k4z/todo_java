@@ -5,7 +5,9 @@
 
   <div class="diagram-grid">
     <div class="role-cluster" *ngFor="let group of diagramGroups" [style.borderColor]="group.colorVar">
-      <h3 class="role-title" [style.color]="group.colorVar">[{{ group.role }}]</h3>
+      <h3 class="role-title" [style.color]="group.colorVar" style="display: flex; align-items: center; gap: 0.4rem;">
+        <lucide-icon [img]="group.icon" [size]="18"></lucide-icon> [{{ group.role }}]
+      </h3>
       
       <div class="nodes-container">
         <div *ngIf="group.tasks.length === 0" class="no-nodes">
@@ -13,14 +15,14 @@
         </div>
         
         <!-- Nodos de las tareas -->
-        <div class="task-node" *ngFor="let task of group.tasks" [style.backgroundColor]="group.colorVar">
+        <div class="task-node" *ngFor="let task of group.tasks" [style.borderTopColor]="group.colorVar">
           <div class="node-content">
-            <span class="node-id">#{{ task.id }}</span>
+            <span class="node-id" [style.color]="group.colorVar">#{{ task.id }}</span>
             <span class="node-title">{{ task.title }}</span>
           </div>
           <!-- Roles tags for shared -->
           <div class="node-tags" *ngIf="task.roles && task.roles.length > 1">
-            <span class="tag" *ngFor="let role of task.roles">[{{ role }}]</span>
+            <span class="tag" *ngFor="let role of task.roles" [style.backgroundColor]="group.colorVar">[{{ role }}]</span>
           </div>
         </div>
       </div>
