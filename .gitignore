@@ -1,6 +1,5 @@
 .agents
 .env
-frontend/
 backend/target/
 frontend/node_modules/
 frontend/dist/

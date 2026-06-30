@@ -1,0 +1,16 @@
+@import 'app/shared/styles/variables';
+@import 'app/shared/styles/mixins';
+@import 'app/shared/styles/animations';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+}
+

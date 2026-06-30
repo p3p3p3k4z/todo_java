@@ -1,0 +1,27 @@
+$color-brand-guinda: #8C1D40;
+$color-brand-magenta: #D81B60;
+$color-brand-teal: #00897B;
+$color-brand-indigo: #3949AB;
+$color-brand-yellow: #FBC02D;
+$color-brand-green: #43A047;
+$color-brand-orange: #F4511E;
+
+$color-bg-main: #FAFAFA;
+$color-bg-surface: #FFFFFF;
+$color-text-main: #121212;
+$color-text-muted: #595959;
+
+:root {
+  --color-brand-guinda: #{$color-brand-guinda};
+  --color-brand-magenta: #{$color-brand-magenta};
+  --color-brand-teal: #{$color-brand-teal};
+  --color-brand-indigo: #{$color-brand-indigo};
+  --color-brand-yellow: #{$color-brand-yellow};
+  --color-brand-green: #{$color-brand-green};
+  --color-brand-orange: #{$color-brand-orange};
+  
+  --color-bg-main: #{$color-bg-main};
+  --color-bg-surface: #{$color-bg-surface};
+  --color-text-main: #{$color-text-main};
+  --color-text-muted: #{$color-text-muted};
+}
