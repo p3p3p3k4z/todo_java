@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Molde utilizado para enviar la informacion de una Tarea hacia el cliente.
+ * Evitamos devolver la Entidad de JPA directamente para proteger datos sensibles 
+ * y evitar ciclos infinitos de serializacion JSON.
+ * Tambien expone arreglos directos (IDs y Emails) de usuarios asignados.
+ */
 @Data
 @Builder
 @NoArgsConstructor

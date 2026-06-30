@@ -11,6 +11,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Estructura de datos requerida para crear o actualizar una Tarea.
+ * Contiene reglas de validacion para asegurar que el titulo y estado no esten vacios.
+ * Adicionalmente, recibe una lista de IDs de usuarios (assigneeIds) para 
+ * permitir la asignacion multiple (N personas a 1 tarea).
+ */
 @Data
 @Builder
 @NoArgsConstructor

@@ -16,7 +16,7 @@ NC='\033[0m'
 function print_header() {
     clear
     echo -e "${BLUE}=============================================${NC}"
-    echo -e "${CYAN}   TO-DO JAVA - CLI {NC}"
+    echo -e "${CYAN}   TO-DO JAVA - CLI "${NC}
     echo -e "${BLUE}=============================================${NC}"
     if [ -n "$TOKEN" ]; then
         echo -e "${GREEN}[+] Estado: Conectado como $CURRENT_USER${NC}"

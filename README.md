@@ -43,3 +43,16 @@ Aplicacion de gestion de tareas modular, de alto rendimiento y segura.
 - Incluye validaciones en frontend y backend (Centralizado con `@ControllerAdvice`).
 - Vistas multiples: Lista y Tablero Kanban interactivo.
 - Evaluacion de usabilidad (Heuristicas de Nielsen) disponible en la carpeta `docs`.
+
+## Pruebas (Testing)
+Para ejecutar las pruebas y validar el cumplimiento tecnico:
+
+**Backend (Java/Spring Boot - JUnit + Mockito):**
+```bash
+docker run --rm -v $(pwd)/backend:/app:z -w /app maven:3.9-eclipse-temurin-17-alpine mvn test
+```
+
+**Frontend (Angular - Jasmine/Karma):**
+```bash
+docker run --rm -v $(pwd)/frontend:/app:z -w /app node:18-alpine sh -c "npm install && npm run test -- --watch=false --browsers=ChromeHeadless"
+```

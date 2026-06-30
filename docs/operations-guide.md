@@ -90,3 +90,19 @@ java -jar target/todo-0.0.1-SNAPSHOT.jar
 ```
 
 *(O de forma directa y rapida para desarrollo usando Maven: `./mvnw spring-boot:run`)*
+
+## 5. Pruebas y Aseguramiento de Calidad (Testing)
+
+Para ejecutar las pruebas unitarias y de integracion que verifican la estabilidad de la aplicacion, se recomienda usar los contenedores de Docker (asegurate de tenerlos corriendo con `docker-compose up -d` primero).
+
+### Backend (JUnit + Mockito)
+Debido a que tu aplicacion utiliza un *Multi-Stage Build* en Docker (la imagen final no contiene Maven para ahorrar espacio), puedes ejecutar los tests usando una imagen volatil de Maven, montando el codigo fuente. Ejecuta esto desde la raiz del proyecto:
+```bash
+docker run --rm -v $(pwd)/backend:/app:z -w /app maven:3.9-eclipse-temurin-17-alpine mvn test
+```
+
+### Frontend (Jasmine/Karma)
+Al igual que el backend, el frontend utiliza NGINX en su etapa final, por lo que no cuenta con Node instalado. Para correr los tests en un contenedor volatil de Node:
+```bash
+docker run --rm -v $(pwd)/frontend:/app:z -w /app node:18-alpine sh -c "npm install && npm run test -- --watch=false --browsers=ChromeHeadless"
+```

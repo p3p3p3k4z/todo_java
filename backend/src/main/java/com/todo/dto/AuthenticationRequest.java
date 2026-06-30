@@ -7,6 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Objeto de transferencia (DTO) utilizado cuando un usuario intenta iniciar sesion.
+ * Define la estructura esperada del cuerpo de la peticion HTTP (email y password) 
+ * y aplica validaciones automaticas mediante anotaciones de Spring Boot.
+ */
 @Data
 @Builder
 @NoArgsConstructor

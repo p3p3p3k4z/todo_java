@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Formato estandar para todas las respuestas de error de la API.
+ * El GlobalExceptionHandler construye y retorna este DTO cuando ocurre 
+ * cualquier excepcion, garantizando que el cliente (ej. Angular) 
+ * siempre reciba los errores con la misma estructura (status, mensaje, fecha).
+ */
 @Data
 @Builder
 @NoArgsConstructor

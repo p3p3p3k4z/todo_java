@@ -9,6 +9,7 @@ import com.todo.repository.TaskRepository;
 import com.todo.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,7 +28,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Pruebas unitarias para la logica de negocio de las tareas.
+ * Se simula el SecurityContext para asegurar que las tareas se asocien 
+ * correctamente al usuario autenticado, y se verifica el soporte para multiples asignados.
+ */
 @ExtendWith(MockitoExtension.class)
+@DisplayName("Pruebas Unitarias del Servicio de Tareas (TaskService)")
 class TaskServiceTest {
 
     @Mock
@@ -47,8 +54,8 @@ class TaskServiceTest {
         userEntity = UserEntity.builder()
                 .id(1L)
                 .email("test@example.com")
-                .password("encoded_password")
-                .role("ROLE_USER")
+                .password("password123")
+                .role("DEVELOPER")
                 .build();
 
         Authentication authentication = mock(Authentication.class);
@@ -66,7 +73,9 @@ class TaskServiceTest {
     }
 
     @Test
+    @DisplayName("Test: Verificacion de Creacion de Tareas (Multiples Asignados)")
     void testCreateTask_Success() {
+        System.out.println("[TEST] Ejecutando Tareas: Verificando que una nueva Tarea se asocie al contexto del usuario (SecurityContextHolder) y se guarde correctamente.");
         TaskRequest request = TaskRequest.builder()
                 .title("Test Task")
                 .description("Test Desc")
