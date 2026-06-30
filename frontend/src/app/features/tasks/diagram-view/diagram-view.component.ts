@@ -50,8 +50,8 @@ export class DiagramViewComponent implements OnChanges {
         const r = task.roles[0].toUpperCase();
         if (r.includes('PM') || r.includes('PROJECT MANAGER')) pm.push(task);
         else if (r.includes('DEVOPS')) devops.push(task);
-        else if (r.includes('SYSADMIN')) sysadmin.push(task);
-        else if (r.includes('DEV')) dev.push(task);
+        else if (r.includes('SYSADMIN') || r.includes('DATA')) sysadmin.push(task);
+        else if (r.includes('DEV') || r.includes('BACKEND') || r.includes('FRONTEND') || r.includes('SENIOR') || r.includes('JUNIOR')) dev.push(task);
         else unassigned.push(task);
       }
     });

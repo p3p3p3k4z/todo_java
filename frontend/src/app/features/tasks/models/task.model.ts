@@ -19,5 +19,7 @@ export interface Task {
   status: TaskStatus;
   dueDate?: string; // YYYY-MM-DD
   roles?: string[]; // PM, DevOps, SysAdmin, Developer
+  assigneeIds?: number[];
+  assigneeEmails?: string[]; // pm@devteam.com, etc
   attachments?: Attachment[];
 }

@@ -25,12 +25,32 @@ export class TaskService {
     // Peticion asincrona al backend.
     this.http.get<Task[]>(this.API_URL).subscribe({
       next: (tasks) => {
+        const mappedTasks = this.mapTasks(tasks);
         // Se inyecta la carga util en la cache; la UI repinta automaticamente.
-        this.tasksSubject.next(tasks);
+        this.tasksSubject.next(mappedTasks);
       },
       error: (err) => console.error('Error loading tasks', err)
     });
   }
+
+  private mapTasks(tasks: Task[]): Task[] {
+    return tasks.map(task => this.mapSingleTask(task));
+  }
+
+  private mapSingleTask(task: Task): Task {
+    let roles: string[] = [];
+    if (task.assigneeEmails) {
+      roles = task.assigneeEmails.map(email => {
+        const e = email.toUpperCase();
+        if (e.includes('PM')) return 'Project Manager';
+        if (e.includes('DEVOPS')) return 'DevOps';
+        if (e.includes('DATA') || e.includes('MACHINELEARNING')) return 'SysAdmin';
+        return 'Developer';
+      });
+    }
+    return { ...task, roles };
+  }
+
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.API_URL);
@@ -43,10 +63,11 @@ export class TaskService {
   createTask(task: Task): Observable<Task> {
     return this.http.post<Task>(this.API_URL, task).pipe(
       tap((newTask) => {
+        const mappedTask = this.mapSingleTask(newTask);
         // Extraemos la instantanea actual del array en memoria.
         const currentTasks = this.tasksSubject.value;
         // Empujamos el nuevo array agregando el objeto recién creado.
-        this.tasksSubject.next([...currentTasks, newTask]);
+        this.tasksSubject.next([...currentTasks, mappedTask]);
       })
     );
   }
@@ -54,12 +75,13 @@ export class TaskService {
   updateTask(id: number, task: Task): Observable<Task> {
     return this.http.put<Task>(`${this.API_URL}/${id}`, task).pipe(
       tap((updatedTask) => {
+        const mappedTask = this.mapSingleTask(updatedTask);
         const currentTasks = this.tasksSubject.value;
         // Buscamos el indice del elemento mutado en cache.
         const index = currentTasks.findIndex(t => t.id === id);
         if (index !== -1) {
           // Reemplazamos el nodo en memoria y disparamos notificacion a los suscriptores.
-          currentTasks[index] = updatedTask;
+          currentTasks[index] = mappedTask;
           this.tasksSubject.next([...currentTasks]);
         }
       })

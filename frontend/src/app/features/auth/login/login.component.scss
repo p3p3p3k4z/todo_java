@@ -1,45 +1,95 @@
 .auth-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   background-color: var(--color-bg-main, #FAFAFA);
 }
 
-.auth-card {
+.auth-banner {
+  flex: 1;
+  background: linear-gradient(rgba(140, 29, 64, 0.92), rgba(140, 29, 64, 0.92)), url('/assets/images/huipil-pattern.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  text-align: center;
+  
+  .brand-icon {
+    margin-bottom: 2rem;
+  }
+  
+  .brand-title {
+    font-size: 4rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.05em;
+  }
+  
+  .brand-subtitle {
+    font-size: 1.25rem;
+    max-width: 400px;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+}
+
+.auth-form-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: var(--color-bg-surface, #FFFFFF);
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  padding: 2.5rem;
   
   h2 {
-    text-align: center;
-    color: var(--color-brand-guinda, #8C1D40);
-    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    color: var(--color-text-main);
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .welcome-text {
+    display: none; /* Removing per instruction */
   }
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   
   label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
     color: var(--color-text-main, #121212);
   }
   
   input {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 1rem;
+    background-color: #F8F9FA;
+    border: 2px solid transparent;
     font-size: 1rem;
+    transition: all 0.2s;
+    
+    /* Eliminar radios curvos por Flat Design */
+    border-radius: 0;
     
     &:focus {
       outline: none;
-      border-color: var(--color-brand-teal, #00897B);
+      background-color: #FFFFFF;
+      border-color: var(--color-brand-guinda);
     }
   }
 }
@@ -52,17 +102,19 @@
 
 .btn-primary {
   width: 100%;
-  padding: 0.75rem;
-  background-color: var(--color-brand-teal, #00897B);
+  padding: 1rem;
+  background-color: var(--color-brand-guinda);
   color: #fff;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 0; /* Flat Design */
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: opacity 0.2s;
+  margin-top: 1rem;
   
   &:hover:not(:disabled) {
-    background-color: darken(#00897B, 10%);
+    opacity: 0.9;
   }
   
   &:disabled {
@@ -72,12 +124,14 @@
 }
 
 .auth-links {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
   
   a {
-    color: var(--color-brand-indigo, #3949AB);
+    color: var(--color-brand-guinda);
+    font-weight: bold;
     text-decoration: none;
     
     &:hover {
