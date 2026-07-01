@@ -9,7 +9,7 @@
         <option [value]="TaskStatus.COMPLETADA">Completada</option>
       </select>
       
-      <button class="btn-primary" (click)="openNewTaskForm()" *ngIf="!showForm" style="display: flex; align-items: center; gap: 0.4rem;">
+      <button class="btn-primary" (click)="openNewTaskForm()" *ngIf="activeOverlay === 'NONE'" style="display: flex; align-items: center; gap: 0.4rem;">
         <lucide-icon [img]="PlusIcon" [size]="18"></lucide-icon> New Task
       </button>
     </div>
@@ -18,7 +18,7 @@
   <app-error-banner [message]="errorMessage"></app-error-banner>
   <app-spinner *ngIf="isLoading"></app-spinner>
 
-  <div *ngIf="showForm" class="form-wrapper fade-in">
+  <div *ngIf="activeOverlay === 'TASK_FORM'" class="form-wrapper fade-in">
     <app-task-form 
       [taskToEdit]="taskToEdit"
       (save)="onFormSave($event)"
@@ -26,10 +26,7 @@
     </app-task-form>
   </div>
 
-  <ng-container *ngIf="!isLoading && !showForm">
-    
-    <!-- Active View Selector -->
-    <ng-container [ngSwitch]="activeView">
+  <ng-container *ngIf="!isLoading && activeOverlay === 'NONE'" [ngSwitch]="activeView">
       
       <!-- List View -->
       <app-task-list 
@@ -71,5 +68,4 @@
       </app-calendar-board>
 
     </ng-container>
-  </ng-container>
 </div>

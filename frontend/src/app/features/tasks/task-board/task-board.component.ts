@@ -45,7 +45,7 @@ export class TaskBoardComponent implements OnInit {
   errorMessage: string = '';
   
   activeView: ViewMode = 'list';
-  showForm: boolean = false;
+  activeOverlay: 'NONE' | 'TASK_FORM' | 'DELETE_CONFIRM' = 'NONE'; //podria meter mas formularios para ese estado
   taskToEdit: Task | null = null;
   
   statusFilter = new FormControl('');
@@ -59,6 +59,7 @@ export class TaskBoardComponent implements OnInit {
     // Sincronizacion inicial del ViewMode inyectado desde SidebarComponent.
     this.viewService.viewMode$.subscribe(mode => {
       this.activeView = mode;
+      this.closeAllOverlays();
     });
 
     // Enlace reactivo al estado global de tareas (Cache en TaskService).
@@ -92,17 +93,21 @@ export class TaskBoardComponent implements OnInit {
 
   openNewTaskForm() {
     this.taskToEdit = null;
-    this.showForm = true;
+    this.activeOverlay = 'TASK_FORM';
   }
 
   openEditForm(task: Task) {
     this.taskToEdit = task;
-    this.showForm = true;
+    this.activeOverlay = 'TASK_FORM';
+  }
+
+  closeAllOverlays() {
+    this.activeOverlay = 'NONE';
+    this.taskToEdit = null;
   }
 
   closeForm() {
-    this.showForm = false;
-    this.taskToEdit = null;
+    this.closeAllOverlays();
   }
 
   onFormSave(event: {task: Task, file?: File}) {

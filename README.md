@@ -20,13 +20,21 @@ Aplicacion To-Do simple
 
 ## Instrucciones de Ejecucion Local
 
-1. Levanta los contenedores y construye las imagenes (API, Base de Datos, Frontend):
+1. Crea un archivo `.env` en la raíz del proyecto para definir variables de entorno:
+   ```env
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=postgres
+   POSTGRES_DB=todo_db
+   JWT_SECRET=ClaveTodoJavaSuperSecreta1234567
+   JWT_EXPIRATION=3600000
+   ```
+2. Levanta los contenedores y construye las imagenes (API, Base de Datos, Frontend):
    ```bash
    docker-compose up -d --build
    ```
-2. La base de datos (PostgreSQL) estara disponible internamente y en el puerto `5432`. Flyway inicializara el esquema automaticamente.
-3. El Backend (API REST) estara expuesto en `http://localhost:8080`.
-4. El Frontend de desarrollo (Angular) estara expuesto en `http://localhost:4200`.
+3. La base de datos (PostgreSQL) estara disponible internamente y en el puerto `5432`. Flyway inicializara el esquema automaticamente.
+4. El Backend (API REST) estara expuesto en `http://localhost:8080`.
+5. El Frontend de desarrollo (Angular) estara expuesto en `http://localhost:4200`.
 
 ## Scripts de Prueba (CLI)
 En la raiz del proyecto se encuentra el script interactivo `cli-verifier.sh` el cual permite probar rapidamente todos los endpoints de la API (registro, login, CRUD y subida de archivos) sin necesidad de Postman o interfaz grafica.
